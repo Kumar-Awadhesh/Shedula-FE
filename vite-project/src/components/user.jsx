@@ -154,6 +154,7 @@ const User = () => {
         setProfile(false);
         setSignup_btn(true);
         setUserInfo(false);
+        navigate('/')
     }
 
     const appointmentBook = () => {
@@ -183,11 +184,53 @@ const User = () => {
 
 
     const profileView = () => {
-        navigate('/user')
+        const getToken = localStorage.getItem("token"); //get token from local storage.
+        const role = localStorage.getItem("user");
+        if (!isTokenExpire(getToken)) {
+            setProfile(true); //set profile as true.
+            setSignup_btn(false); // set singnup button as false.
+            
+            if(role !== "doctor"){
+                navigate('/user');
+            }
+            else if(role === "doctor"){
+                navigate('/doctorProfile')
+            }
+        }
+        else {
+            alert("Session Expired, Login again !")
+            localStorage.removeItem("token");
+            setLoginToken("");
+            setProfile(false);
+            setSignup_btn(true);
+            navigate('/')
+            return
+        }
     }
 
     const myAppointment = () => {
-        navigate('/user')
+        const getToken = localStorage.getItem("token"); //get token from local storage.
+        const role = localStorage.getItem("user");
+        if (!isTokenExpire(getToken)) {
+            setProfile(true); //set profile as true.
+            setSignup_btn(false); // set singnup button as false.
+            
+            if(role !== "doctor"){
+                navigate('/user');
+            }
+            else if(role === "doctor"){
+                navigate('/doctorProfile')
+            }
+        }
+        else {
+            alert("Session Expired, Login again !")
+            localStorage.removeItem("token");
+            setLoginToken("");
+            setProfile(false);
+            setSignup_btn(true);
+            navigate('/')
+            return
+        }
     }
 
 
@@ -312,8 +355,8 @@ const User = () => {
                             userProfile.map((user, index) => (
                                 <div className="user-card" key={index}>
                                     <div>
-                                         <h1 className="user-detail">User Detail</h1>
-                                        <h2>{user.name}</h2>
+                                        <h1 className="user-detail">User Detail</h1>
+                                        <h2 className="username">{user.name}</h2>
                                         <h3>Phone:- {user.phone}</h3>
                                         <h3>Email:- {user.email}</h3>
                                     </div>

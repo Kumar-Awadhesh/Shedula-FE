@@ -201,11 +201,12 @@ const Home = () => {
             }
         }
         else {
-            alert("Session Expired, Login again !")
             localStorage.removeItem("token");
             setLoginToken("");
             setProfile(false);
             setSignup_btn(true);
+            alert("Session Expired, Login again !")
+            navigate('/')
             return
         }
     }
@@ -249,23 +250,25 @@ const Home = () => {
 
     const myAppointment = async () => {
         const getToken = localStorage.getItem("token"); //get token from local storage.
+        const role = localStorage.getItem("user");
         if (!isTokenExpire(getToken)) {
             setProfile(true); //set profile as true.
             setSignup_btn(false); // set singnup button as false.
-                
-            if(patientLogin && !doctorLogin){
-                    navigate('/user');
+            
+            if(role !== "doctor"){
+                navigate('/user');
             }
-            else if(doctorLogin && !patientLogin){
+            else if(role === "doctor"){
                 navigate('/doctorProfile')
             }
         }
-        else{
+        else {
             alert("Session Expired, Login again !")
             localStorage.removeItem("token");
             setLoginToken("");
             setProfile(false);
             setSignup_btn(true);
+            navigate('/')
             return
         }
     }

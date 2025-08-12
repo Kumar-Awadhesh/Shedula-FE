@@ -19,7 +19,8 @@ const DoctorProfile = () => {
     const [password, setPassword] = useState(""); //set password as empty.
     const [profile, setProfile] = useState(false); // set profile as false.
     const [userInfo, setUserInfo] = useState(false); // set user info as false;
-    const [userProfile, setUserProfile] = useState([]); // set user profile as an empty array.
+    const [doctorProfile, setDoctorProfile] = useState([]); // set user profile as an empty array.
+    const [doctorAppointments, setDoctorAppointments] = useState([]);
     const navigate = useNavigate(); // intializing useNavigate.
 
 
@@ -154,41 +155,100 @@ const DoctorProfile = () => {
         setProfile(false);
         setSignup_btn(true);
         setUserInfo(false);
+        navigate('/');
     }
 
     const appointmentBook = () => {
         navigate('/appointment')
     }
 
-    const fetchUser = async () => {
+    const fetchDoctor = async () => {
         const token = localStorage.getItem("token")
         try {
-            const user = await axios.get("https://shedula.onrender.com/user/profile", {
+            const doctor = await axios.get("https://shedula.onrender.com/doctor/doctorProfile", {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             })
-            console.log(user.data.msg);
-            setUserProfile([user.data.msg]);
+            
+            setDoctorProfile([doctor.data.msg]);
             setLoading(false);
+            console.log(doctor.data.msg)
+        
         }
         catch (err) {
-            console.log("user catch error", err);
+            console.log("doctor catch error", err);
         }
     }
 
     useEffect(() => {
-        fetchUser()
+        fetchDoctor()
+        fetctDoctorAppointment()
     }, [])
 
 
     const profileView = () => {
-        // navigate('/user')
+        const getToken = localStorage.getItem("token"); //get token from local storage.
+        const role = localStorage.getItem("user");
+        if (!isTokenExpire(getToken)) {
+            setProfile(true); //set profile as true.
+            setSignup_btn(false); // set singnup button as false.
+            
+            if(role !== "doctor"){
+                navigate('/user');
+            }
+            else if(role === "doctor"){
+                navigate('/doctorProfile')
+            }
+        }
+        else {
+            alert("Session Expired, Login again !")
+            localStorage.removeItem("token");
+            setLoginToken("");
+            setProfile(false);
+            setSignup_btn(true);
+            navigate('/')
+            return
+        }
     }
 
     const myAppointment = () => {
-        // navigate('/user')
+        const getToken = localStorage.getItem("token"); //get token from local storage.
+        const role = localStorage.getItem("user");
+        if (!isTokenExpire(getToken)) {
+            setProfile(true); //set profile as true.
+            setSignup_btn(false); // set singnup button as false.
+            
+            if(role !== "doctor"){
+                navigate('/user');
+            }
+            else if(role === "doctor"){
+                navigate('/doctorProfile')
+            }
+        }
+        else {
+            alert("Session Expired, Login again !")
+            localStorage.removeItem("token");
+            setLoginToken("");
+            setProfile(false);
+            setSignup_btn(true);
+            alert("Session Expired!")
+            navigate('/')
+            return
+        }
     }
+
+    const fetctDoctorAppointment = async() => {
+        const token = localStorage.getItem("token");
+        const doctorAppointment = await axios.get("https://shedula.onrender.com/appointment/getAppointment", {
+            headers:{
+                Authorization: `Bearer ${token}`
+            }
+        })
+        console.log(doctorAppointment.data.msg);
+        setDoctorAppointments(doctorAppointment.data.msg);
+    }
+
 
 
 
@@ -299,12 +359,79 @@ const DoctorProfile = () => {
                         loginLoading &&
                         <div className="overlay">
                             <div className="loading-container">
-                                <h3>Loading...</h3>
+                                <h3>Please Wait...</h3>
                             </div>
                         </div>
                     }
-
                 </nav>
+                <div className="doctor-page-container">
+                    {loading ? (<h3>Loading...</h3>) : (
+                        doctorProfile.map((doctor, index) => (
+                            <div className="doctor-profile-card" key={index}>
+                                <div className="doctor-heading"><h2>Doctor Section</h2></div>
+                                <div className="personal-detail">
+                                    <div className="doctor-image-container"><img src={`https://shedula.onrender.com${doctor.image}`} alt="" /></div>
+                                    <hr />
+                                    <div>
+                                        <h3>Name:-</h3>
+                                        <h3>Designation:-</h3>
+                                        <h3>Phone:-</h3>
+                                        <h3>Email:-</h3>
+                                        <h3>Address:-</h3>
+                                    </div>
+                                    <div>
+                                        <h3>{doctor.name}</h3>
+                                        <h3>{doctor.designation}</h3>
+                                        <h3>{doctor.phone}</h3>
+                                        <h3>{doctor.email}</h3>
+                                        <h3>{doctor.address}</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        ))
+                    )
+                    }
+                </div>
+                <div className="doctor-appointment-container">
+                    <h2 className="doctor-heading">Appointment Detail</h2>
+                    { 
+                        doctorAppointments.map((app, index) => (
+                            <div className="doctor-appointment-card" key={index}>
+                                <div>
+                                    <h3>Patient:-</h3>
+                                    <h3>Date:-</h3>
+                                    <h3>Time:-</h3>
+                                </div>
+                                <div>
+                                    {
+                                        app.user.map((user, index)=>(
+                                            <h3 key={index}>{user.name}</h3>
+                                        ))
+                                    }
+                                    <h3>{app.date}</h3>
+                                    <h3>{app.time}</h3>
+                                </div>
+                                <hr />
+                                <div className="cancel-complete-prescription-btn-container">
+                                    <button>Cancel Appointment</button>
+                                    <button>Mark as Complete</button>
+                                    <button>Prescription</button>
+                                </div>
+                            </div>
+                        )) 
+                    } 
+                </div>
+                <footer className="footer">
+                    <div className="contact-container" id="contact-container">
+                        <h4>Reach out to us:-</h4>
+                        <h4>Call:- 9097745573</h4>
+                        <h4>Email:- awadhesh0506kumar@gmail.com</h4>
+                    </div>
+                    <hr />
+                    <p>This Website is Developed and Maintained by Awadhesh Kumar <br />
+                        All the Copy Rights Reserved to Awadhesh Kumar
+                    </p>
+                </footer>
             </main>
         </>
     )

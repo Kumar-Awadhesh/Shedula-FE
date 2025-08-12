@@ -549,6 +549,63 @@ a {
   margin-top: 10px;
 }
 
+.doctor-page-container{
+  margin-top: 50px;
+}
+
+.doctor-profile-card{
+  width: 90%;
+  margin: auto;
+  margin-top: 50px;
+
+}
+
+.personal-detail{
+  display: flex;
+  color: whitesmoke;
+  border-radius: 10px;
+  padding: 10px;
+  justify-content: space-around;
+  background-color: darkcyan;
+}
+
+.doctor-image-container>img{
+  width: 300px;
+  height: 300px;
+  padding: 10px;
+  border-radius: 50%;
+  background-color: whitesmoke;
+}
+
+.doctor-appointment-card{
+  width: 90%;
+  display: flex;
+  margin: auto;
+  color: whitesmoke;
+  border-radius: 10px;
+  gap: 20px;
+  justify-content: space-evenly;
+  background-color: darkcyan;
+}
+
+.cancel-complete-prescription-btn-container{
+  align-content: center;
+}
+
+.cancel-complete-prescription-btn-container>button{
+  padding: 10px;
+  border: none;
+  outline: none;
+  border-radius: 10px;
+  margin-left: 20px;
+  font-size: medium;
+}
+
+.cancel-complete-prescription-btn-container>button:hover{
+  cursor: pointer;
+  color: whitesmoke;
+  background-color: green;
+}
 
 
 
@@ -563,7 +620,7 @@ a {
   margin: auto;
   margin-top: 80px;
   padding: 10px;
-  color: cyan;
+  color: whitesmoke;
   border-radius: 10px;
   align-items: center;
   line-height: 0.5;
@@ -582,6 +639,10 @@ a {
   padding: 15px;
   border-radius: 10px;
   background-color: lightseagreen;
+}
+
+.username{
+  margin-bottom: 20PX;
 }
 
 
@@ -697,6 +758,11 @@ a {
   background-color: greenyellow;
 }
 
+.appointment-prev-container>button:hover{
+  cursor: pointer;
+  background-color: lightgreen;
+}
+
 .appointment-confirmation-container{
   width: 500px;
   margin: auto;
@@ -705,7 +771,7 @@ a {
   border-radius: 10px;
 }
 
-.appointment-confirmation-container>h3{
+.appointment-confirmation-container>h2{
   text-align: center;
   margin-bottom: 30px;
   color: whitesmoke;
@@ -716,11 +782,43 @@ a {
 .appointment-detail{
   width: max-content;
   margin: auto;
+  background-color: darkcyan;
 }
 
 .appointment-detail>h4>b{
   padding-right: 50px;
 
+}
+
+.appointment-prev-data{
+  min-width: max-content;
+  display: flex;
+  gap: 50px;
+  text-align: left;
+  line-height: 1;
+  color: whitesmoke;
+  margin-bottom: 20px;
+}
+
+.confirm-Reschedule-button-container{
+  display: flex;
+  gap: 30px;
+  text-align: center;
+  justify-content: center;
+}
+
+.confirm-Reschedule-button-container>button{
+  padding: 10px;
+  font-size: medium;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  background-color: yellowgreen;
+}
+
+.confirm-Reschedule-button-container>button:hover{
+  cursor: pointer;
+  background-color: lightgreen;
 }
 
 

@@ -7,6 +7,7 @@ import '../App.css'; //import App.css to apply styling.
 
 const Appointment = () => {
     const [loading, setLoading] = useState(true); // set loading untill data not fetched.
+    const [loginLoading, setLoginLoading] = useState(false);
     const [signup_btn, setSignup_btn] = useState(true);
     const [login, setLogin] = useState(false); //set login page false at first.
     const [loginConfirm, setLoginConfirm] = useState(false); // set login confirm as false.
@@ -176,10 +177,17 @@ const Appointment = () => {
 
     const profileView = async () => {
         const getToken = localStorage.getItem("token"); //get token from local storage.
-        if (getToken && !isTokenExpire(getToken)) {
+        const role = localStorage.getItem("user");
+        if (!isTokenExpire(getToken)) {
             setProfile(true); //set profile as true.
             setSignup_btn(false); // set singnup button as false.
-            navigate('/user');
+            
+            if(role !== "doctor"){
+                navigate('/user');
+            }
+            else if(role === "doctor"){
+                navigate('/doctorProfile')
+            }
         }
         else {
             alert("Session Expired, Login again !")
@@ -187,12 +195,34 @@ const Appointment = () => {
             setLoginToken("");
             setProfile(false);
             setSignup_btn(true);
+            navigate('/')
             return
         }
     }
 
     const myAppointment = () => {
-
+        const getToken = localStorage.getItem("token"); //get token from local storage.
+        const role = localStorage.getItem("user");
+        if (!isTokenExpire(getToken)) {
+            setProfile(true); //set profile as true.
+            setSignup_btn(false); // set singnup button as false.
+            
+            if(role !== "doctor"){
+                navigate('/user');
+            }
+            else if(role === "doctor"){
+                navigate('/doctorProfile')
+            }
+        }
+        else {
+            alert("Session Expired, Login again !")
+            localStorage.removeItem("token");
+            setLoginToken("");
+            setProfile(false);
+            setSignup_btn(true);
+            navigate('/')
+            return
+        }
     }
 
 
@@ -269,6 +299,7 @@ const Appointment = () => {
                     Authorization: `Bearer ${loginToken}`
                 }
             })
+                setLoginLoading(false);
                 alert(addAppointment.data.msg);
                 setAppointmentDate("");
                 setAppointmentTime("");
@@ -300,6 +331,7 @@ const Appointment = () => {
     }
 
     const saveAppointment = async() => {
+        setLoginLoading(true);
         await confirmAppointment();
         setAppointmentConfirmation(false);
     }
@@ -448,18 +480,38 @@ const Appointment = () => {
                         appointmentConfirmation &&
                         <div className="overlay">
                             <div className="appointment-confirmation-container">
-                                <h3>Confirm Appointment</h3>
+                                <h2>Confirm Appointment</h2>
                                 <div className="appointment-detail">
-                                    <h4>Dr. :- {doctorName}</h4>
-                                    <h4>Designation :- {doctorRole}</h4>
-                                    <h4>Patient :- {userName}</h4>
-                                    <h4>Date :- {appointmentDate}</h4>
-                                    <h4>Time :- {appointmentTime}</h4>
-                                    <div className="confirm&Reschedule-button-containerb">
+                                   <div className="appointment-prev-data">
+                                        <div>
+                                            <h3>Dr. :-</h3>
+                                            <h3>Designation :-</h3>
+                                            <h3>Patient :-</h3>
+                                            <h3>Date :-</h3>
+                                            <h3>Time :-</h3>
+                                        </div>
+                                        <div>
+                                            <h3>{doctorName}</h3>
+                                            <h3>{doctorRole}</h3>
+                                            <h3>{userName}</h3>
+                                            <h3>{appointmentDate}</h3>
+                                            <h3>{appointmentTime}</h3>
+                                        </div>
+                                    </div>
+                                    <div className="confirm-Reschedule-button-container">
                                         <button onClick={reschedule}>Reschedule</button>
                                         <button onClick={saveAppointment}>Confirm</button>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                    }
+
+                    {
+                        loginLoading &&
+                        <div className="overlay">
+                            <div className="loading-container">
+                                <h3>Please Wait...</h3>
                             </div>
                         </div>
                     }

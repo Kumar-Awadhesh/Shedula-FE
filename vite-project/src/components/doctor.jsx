@@ -153,7 +153,28 @@ const Doctor = () => {
     }
 
     const myAppointment = () => {
-
+        const getToken = localStorage.getItem("token"); //get token from local storage.
+        const role = localStorage.getItem("user");
+        if (!isTokenExpire(getToken)) {
+            setProfile(true); //set profile as true.
+            setSignup_btn(false); // set singnup button as false.
+            
+            if(role !== "doctor"){
+                navigate('/user');
+            }
+            else if(role === "doctor"){
+                navigate('/doctorProfile')
+            }
+        }
+        else {
+            alert("Session Expired, Login again !")
+            localStorage.removeItem("token");
+            setLoginToken("");
+            setProfile(false);
+            setSignup_btn(true);
+            navigate('/')
+            return
+        }
     }
 
 
@@ -163,15 +184,23 @@ const Doctor = () => {
         setProfile(false);
         setSignup_btn(true);
         setUserInfo(false);
+        navigate('/');
     }
 
 
     const profileView = async () => {
         const getToken = localStorage.getItem("token"); //get token from local storage.
-        if (getToken && !isTokenExpire(getToken)) {
+        const role = localStorage.getItem("user");
+        if (!isTokenExpire(getToken)) {
             setProfile(true); //set profile as true.
             setSignup_btn(false); // set singnup button as false.
-            navigate('/user');
+            
+            if(role !== "doctor"){
+                navigate('/user');
+            }
+            else if(role === "doctor"){
+                navigate('/doctorProfile')
+            }
         }
         else {
             alert("Session Expired, Login again !")
@@ -179,6 +208,7 @@ const Doctor = () => {
             setLoginToken("");
             setProfile(false);
             setSignup_btn(true);
+            navigate('/')
             return
         }
     }
