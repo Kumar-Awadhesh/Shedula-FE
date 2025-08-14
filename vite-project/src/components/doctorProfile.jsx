@@ -26,8 +26,7 @@ const DoctorProfile = () => {
     const [medicineName, setMedicineName] = useState("");
     const [dose, setDose] = useState("");
     const [description, setDescription] = useState("");
-    const [patientId, setPatientId] = useState("");
-    const [doctorPrescriptionData, setdoctorPrescriptionData] = useState([]);
+    const [doctorPrescriptionData, setDoctorPrescriptionData] = useState([]);
     const navigate = useNavigate(); // intializing useNavigate.
 
 
@@ -176,7 +175,6 @@ const DoctorProfile = () => {
                     Authorization: `Bearer ${token}`
                 }
             })
-
             setDoctorProfile([doctor.data.msg]);
             setLoading(false);
 
@@ -189,7 +187,7 @@ const DoctorProfile = () => {
     useEffect(() => {
         fetchDoctor();
         fetctDoctorAppointment();
-        getPrescriptionData();
+       getPrescriptionData();
     }, [])
 
 
@@ -292,13 +290,13 @@ const DoctorProfile = () => {
 
     const getPrescriptionData = async() => {
         const token = localStorage.getItem("token")
-        const getPrescription = await axios.get("https://shedula.onrender.com/prescription/getPrescription", {
+        const getPrescription = await axios.get("http://localhost:3201/prescription/getPrescription", {
             headers:{
                 Authorization: `Bearer ${token}`
             }
         })
         console.log(getPrescription.data.msg)
-        setPrescriptionData(getPrescription.data.msg);
+        setDoctorPrescriptionData(getPrescription.data.msg);
     }
 
 
@@ -505,7 +503,7 @@ const DoctorProfile = () => {
                                             <div key={index} className="userid-container">
                                                 {app.user.map((user, index) => (
                                                     
-                                                    <button className="prescription-add-btn" onClick={()=>addPrescription(user)}>Add Prescription</button>
+                                                    <button key={index} className="prescription-add-btn" onClick={()=>addPrescription(user)}>Add Prescription</button>
                                                 ))}
                                             </div>
                                         ))
@@ -517,8 +515,22 @@ const DoctorProfile = () => {
                     }
                 </div>
                 <div className="prescription-data-container">
+                    <h2>Prescription Detail</h2>
                     {
-
+                        doctorPrescriptionData.map((pres, index) => (
+                            <div className="doctor-prescription-card" key={index}>
+                                <div>
+                                    <h3>Medicine:- </h3>
+                                    <h3>Dosage:- </h3>
+                                    <h3>Instruction:- </h3>
+                                </div>
+                                <div>
+                                    <h3>{pres.medicine}</h3>
+                                    <h3>{pres.dosage}</h3>
+                                    <h3>{pres.description}</h3>
+                                </div>
+                            </div>
+                        ))
                     }
                 </div>
                 <footer className="footer">

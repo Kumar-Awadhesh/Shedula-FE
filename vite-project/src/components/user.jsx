@@ -176,7 +176,6 @@ const User = () => {
             }
             setRegister(false);
             setRegisterConfirm(true);
-            console.log(doctorRegister.data.msg)
         }
         catch (err) {
             console.log("failed to register", err)
@@ -211,7 +210,7 @@ const User = () => {
                     Authorization: `Bearer ${token}`
                 }
             })
-            console.log(user.data.msg);
+            
             setUserProfile([user.data.msg]);
             setLoading(false);
         }
