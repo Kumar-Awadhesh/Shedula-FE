@@ -144,7 +144,6 @@ const DoctorProfile = () => {
             }
             setRegister(false);
             setRegisterConfirm(true);
-            console.log(userRegister.data.msg)
         }
         catch (err) {
             console.log("failed to register", err)
@@ -180,7 +179,6 @@ const DoctorProfile = () => {
 
             setDoctorProfile([doctor.data.msg]);
             setLoading(false);
-            console.log(doctor.data.msg)
 
         }
         catch (err) {
@@ -253,7 +251,6 @@ const DoctorProfile = () => {
                 Authorization: `Bearer ${token}`
             }
         })
-        console.log(doctorAppointment.data.msg);
         setDoctorAppointments(doctorAppointment.data.msg);
     }
 

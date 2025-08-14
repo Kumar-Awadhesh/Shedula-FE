@@ -141,7 +141,6 @@ const Doctor = () => {
             }
             setRegister(false);
             setRegisterConfirm(true);
-            console.log(userRegister.data.msg)
         }
         catch (err) {
             console.log("failed to register", err)

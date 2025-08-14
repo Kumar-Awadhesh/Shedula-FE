@@ -153,7 +153,6 @@ const Appointment = () => {
             }
             setRegister(false);
             setRegisterConfirm(true);
-            console.log(userRegister.data.msg)
         }
         catch (err) {
             console.log("failed to register", err)
@@ -243,7 +242,7 @@ const Appointment = () => {
     }, [])
 
     const user = localStorage.getItem("user");
-    console.log(user)
+
     const appointmentPrev = (doctor) =>{
         setDoctorName(doctor.name);
         setDoctorRole(doctor.designation);
@@ -299,10 +298,15 @@ const Appointment = () => {
                     Authorization: `Bearer ${loginToken}`
                 }
             })
-                setLoginLoading(false);
-                alert(addAppointment.data.msg);
-                setAppointmentDate("");
-                setAppointmentTime("");
+            if(addAppointment.data.msg.includes("duplicate")){
+                alert("Date or Time Slot not available!");
+                setLoading(false);
+                return;
+            }
+            setLoginLoading(false);
+            alert(addAppointment.data.msg);
+            setAppointmentDate("");
+            setAppointmentTime("");
             } 
             catch (err) {
                 console.log("catch error", err);
