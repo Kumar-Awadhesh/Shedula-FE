@@ -15,7 +15,9 @@ const Home = () => {
     const [register, setRegister] = useState(false); //set user register page false at first.
     const [patientLogin, setPatientLogin] = useState(true);
     const [doctorLogin, setDoctorLogin] = useState(false);
+    const [doctorRegister, setDoctorRegister] = useState(false);
     const [name, setName] = useState("") // set name as false.
+    const [designation, setDesignation] = useState("");
     const [phone, setPhone] = useState(""); // set phone as false.
     const [email, setEmail] = useState(""); //set email as empty.
     const [password, setPassword] = useState(""); //set password as empty.
@@ -142,6 +144,8 @@ const Home = () => {
     const registerUser = async () => {
         const userData = {
             name: name,
+            designation: designation,
+            role: role,
             phone: phone,
             email: email,
             password: password
@@ -283,6 +287,14 @@ const Home = () => {
         setPatientLogin(false);
     }
 
+    const patientRegisterComponent = () => {
+
+    }
+
+    const doctorRegisterComponent = () => {
+        
+    }
+
 
 
 
@@ -291,6 +303,7 @@ const Home = () => {
             <main className="container">
                 <nav className='title-container'>
                     <div className='logo-container' onClick={(() => { navigate('/') })}>
+                        <img src="images/official-logo.png" alt="official-logo" />
                         <h1 className='title'>Healthcare</h1>
                     </div>
 
@@ -344,6 +357,7 @@ const Home = () => {
                         <div className='overlay'>
                             <div className='login-container'>
                                 <button className='login-close-btn' onClick={(() => setLogin(false))}>X</button>
+                                <img className="official-logo" src="images/official-logo.png" alt="official-logo" />
                                 <h1>Login to Healthcare</h1>
                                 <div className="choice-login-container">
                                     <button onClick={patientLoginComponent} className={!patientLogin ? "patient-login-btn" : "choice-btn"}>Patient</button>
@@ -360,7 +374,6 @@ const Home = () => {
                         loginConfirm &&
                         <div className='overlay'>
                             <div className='confirmation-container'>
-                                <img src="/images/success-icon.png" alt="success-icon" />
                                 <h2>Login Successfully !</h2>
                             </div>
                         </div>
@@ -373,9 +386,35 @@ const Home = () => {
                         <div className='overlay'>
                             <div className='register-container'>
                                 <button className='register-close-btn' onClick={(() => setRegister(false))}>X</button>
+                                <img className="official-logo" src="images/official-logo.png" alt="official-logo" />
                                 <h1>Register to Healthcare</h1>
+                                <div className="choice-login-container">
+                                    <button onClick={patientRegisterComponent} className={!register ? "patient-login-btn" : "choice-btn"}>Patient</button>
+                                    <button onClick={doctorRegisterComponent} className={!doctorLogin ? "doctor-login-btn" : "choice-btn"}>Doctor</button>
+                                </div>
                                 <input type="text" placeholder='Enter your name' value={name} onChange={(e) => setName(e.target.value)} /> <br />
                                 <input type="email" placeholder='Enter your email' value={email} onChange={(e) => setEmail(e.target.value)} /> <br />
+                                <input type="text" placeholder='Enter your phone number' value={phone} onChange={(e) => setPhone(e.target.value)} /> <br />
+                                <input type="password" placeholder='Enter your password' value={password} onChange={(e) => setPassword(e.target.value)} /> <br />
+                                <button className='submit-btn' onClick={registerUser}>Register</button>
+                            </div>
+                        </div>
+                    }
+
+                    {
+                        doctorRegister &&
+                        <div className='overlay'>
+                            <div className='register-container'>
+                                <button className='register-close-btn' onClick={(() => setRegister(false))}>X</button>
+                                <img className="official-logo" src="images/official-logo.png" alt="official-logo" />
+                                <h1>Register to Healthcare</h1>
+                                <div className="choice-login-container">
+                                    <button onClick={patientRegisterComponent} className={!register ? "patient-login-btn" : "choice-btn"}>Patient</button>
+                                    <button onClick={doctorRegisterComponent} className={!doctorLogin ? "doctor-login-btn" : "choice-btn"}>Doctor</button>
+                                </div>
+                                <input type="text" placeholder='Enter your name' value={name} onChange={(e) => setName(e.target.value)} /> <br />
+                                 <input type="text" placeholder='Enter your designation' value={name} onChange={(e) => setDesignation(e.target.value)} /> <br />
+                                <input type="email" placeholder='Enter your email' value={designation} onChange={(e) => setEmail(e.target.value)} /> <br />
                                 <input type="text" placeholder='Enter your phone number' value={phone} onChange={(e) => setPhone(e.target.value)} /> <br />
                                 <input type="password" placeholder='Enter your password' value={password} onChange={(e) => setPassword(e.target.value)} /> <br />
                                 <button className='submit-btn' onClick={registerUser}>Register</button>

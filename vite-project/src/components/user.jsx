@@ -14,12 +14,15 @@ const User = () => {
     const [registerConfirm, setRegisterConfirm] = useState(false); // set register confirmation page false.
     const [register, setRegister] = useState(false); //set user register page false at first.
     const [name, setName] = useState("") // set name as false.
+    const [designation, setDesignation] = useState("");
+    const [role, setRole] = useState("");
     const [phone, setPhone] = useState(""); // set phone as false.
     const [email, setEmail] = useState(""); //set email as empty.
     const [password, setPassword] = useState(""); //set password as empty.
     const [profile, setProfile] = useState(false); // set profile as false.
     const [userInfo, setUserInfo] = useState(false); // set user info as false;
     const [userProfile, setUserProfile] = useState([]); // set user profile as an empty array.
+    const [doctorRegistration, setDoctorRegistration] = useState(false)
     const navigate = useNavigate(); // intializing useNavigate.
 
 
@@ -136,7 +139,6 @@ const User = () => {
             }
             setRegister(false);
             setRegisterConfirm(true);
-            console.log(userRegister.data.msg)
         }
         catch (err) {
             console.log("failed to register", err)
@@ -146,6 +148,46 @@ const User = () => {
         setEmail("");
         setPassword("");
     }
+
+    //doctor register function to register user.
+    const doctorRegister = async () => {
+        const doctorData = {
+            name: name,
+            designation: designation,
+            phone: phone,
+            email: email,
+            password: password
+        }
+        if (!name || !designation || !phone || !email || !password) {
+            alert("all fields are requiured !"); // alert if given parameter is false.
+            return
+        }
+
+        try {
+            //post request to register user to data base.
+            const doctorRegister = await axios.post("https://shedula.onrender.com/doctor/register", doctorData)
+            if (doctorRegister.data.msg.includes("already")) {
+                alert("User already Registered !");
+                setName("");
+                setPhone("");
+                setEmail("");
+                setPassword("");
+                return;
+            }
+            setRegister(false);
+            setRegisterConfirm(true);
+            console.log(doctorRegister.data.msg)
+        }
+        catch (err) {
+            console.log("failed to register", err)
+        }
+        setName("");
+        setDesignation("");
+        setPhone("");
+        setEmail("");
+        setPassword("");
+    }
+
 
 
 
@@ -240,9 +282,9 @@ const User = () => {
             <main className="container">
                 <nav className='title-container'>
                     <div className='logo-container' onClick={(() => { navigate('/') })}>
+                        <img className="official-logo" src="images/official-logo.png" alt="official-logo" />
                         <h1 className='title'>Healthcare</h1>
                     </div>
-
 
                     <div className="appointment-btn-container">
                         <h3 onClick={appointmentBook}>Book Appointment</h3>
@@ -293,6 +335,7 @@ const User = () => {
                         <div className='overlay'>
                             <div className='login-container'>
                                 <button className='login-close-btn' onClick={(() => setLogin(false))}>X</button>
+                                <img className="official-logo" src="images/official-logo.png" alt="official-logo" />
                                 <h1>Login to Healthcare</h1>
                                 <input type="text" placeholder='Enter your email' value={email} onChange={(e) => setEmail(e.target.value)} /> <br />
                                 <input type="password" placeholder='Enter your password' value={password} onChange={(e) => setPassword(e.target.value)} /> <br />
@@ -318,12 +361,30 @@ const User = () => {
                         <div className='overlay'>
                             <div className='register-container'>
                                 <button className='register-close-btn' onClick={(() => setRegister(false))}>X</button>
+                                <img className="official-logo" src="images/official-logo.png" alt="official-logo" />
                                 <h1>Register to Healthcare</h1>
                                 <input type="text" placeholder='Enter your name' value={name} onChange={(e) => setName(e.target.value)} /> <br />
                                 <input type="email" placeholder='Enter your email' value={email} onChange={(e) => setEmail(e.target.value)} /> <br />
                                 <input type="text" placeholder='Enter your phone number' value={phone} onChange={(e) => setPhone(e.target.value)} /> <br />
                                 <input type="password" placeholder='Enter your password' value={password} onChange={(e) => setPassword(e.target.value)} /> <br />
                                 <button className='submit-btn' onClick={registerUser}>Register</button>
+                            </div>
+                        </div>
+                    }
+
+                    {   doctorRegistration &&
+                        <div className='overlay'>
+                            <div className='register-container'>
+                                <button className='register-close-btn' onClick={(() => setRegister(false))}>X</button>
+                                <img className="official-logo" src="images/official-logo.png" alt="official-logo" />
+                                <h1>Register to Healthcare</h1>
+                                <input type="text" placeholder='Enter your name' value={name} onChange={(e) => setName(e.target.value)} /> <br />
+                                <input type="text" placeholder='Enter your designation' value={designation} onChange={(e) => setDesignation(e.target.value)} /> <br />
+                                <input type="text" placeholder='Enter your role' value={role} onChange={(e) => setRole(e.target.value)} /> <br />
+                                <input type="email" placeholder='Enter your email' value={email} onChange={(e) => setEmail(e.target.value)} /> <br />
+                                <input type="text" placeholder='Enter your phone number' value={phone} onChange={(e) => setPhone(e.target.value)} /> <br />
+                                <input type="password" placeholder='Enter your password' value={password} onChange={(e) => setPassword(e.target.value)} /> <br />
+                                <button className='submit-btn' onClick={doctorRegister}>Register</button>
                             </div>
                         </div>
                     }

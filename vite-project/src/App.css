@@ -38,8 +38,14 @@
   cursor: pointer;
 }
 
+.logo-container>img, .official-logo{
+  width: 70px;
+  height: 45px;
+}
+
 .title {
   font-size: xx-large;
+  margin-left: -5px;
 }
 
 .btn-container {
@@ -144,6 +150,12 @@ h3 {
   align-content: center;
   border-radius: 20px;
   background-color: white;
+}
+
+div.login-container h1, div.register-container h1{
+  padding: 10px;
+  color: whitesmoke;
+  background-color: darkcyan;
 }
 
 .login-container>input {
@@ -252,11 +264,11 @@ h3 {
 
 .register-container {
   width: 50%;
-  height: 70%;
   position: relative;
   text-align: center;
   align-content: center;
   border-radius: 20px;
+  padding: 10px 0 10px 0;
   background-color: white;
 }
 
@@ -592,7 +604,7 @@ a {
   align-content: center;
 }
 
-.cancel-complete-prescription-btn-container>button{
+.cancel-complete-prescription-btn-container>button, .cancel-complete-prescription-btn-container>select{
   padding: 10px;
   border: none;
   outline: none;
@@ -601,10 +613,100 @@ a {
   font-size: medium;
 }
 
-.cancel-complete-prescription-btn-container>button:hover{
+.cancel-complete-prescription-btn-container>button:hover, .cancel-complete-prescription-btn-container>select{
   cursor: pointer;
+}
+
+.cancel-btn{
+  background-color: yellow;
+}
+
+.cancel-btn:hover{
+  background-color: red;
   color: whitesmoke;
+}
+
+.complete-btn, .prescription-btn{
+  background-color: greenyellow;
+}
+
+.complete-btn:hover, .prescription-btn:hover{
   background-color: green;
+  color: whitesmoke;
+}
+
+.prescription-container{
+  width: 700px;
+  background-color: whitesmoke;
+  border-radius: 10px;
+  padding: 10px 0 10px 0;
+}
+
+.prescription-form-container{
+  width: max-content;
+  margin: auto;
+}
+
+.prescription-form-heading{
+  text-align: center;
+  margin: auto;
+  margin-bottom: 50px;
+  color: whitesmoke;
+  padding: 5px;
+  background-color: darkcyan;
+}
+
+.prescription-disable-btn{
+  text-align: right;
+  padding-right: 10px;
+  margin-bottom: 20px;
+}
+
+.prescription-disable-btn>button{
+  border: none;
+  outline: none;
+  background-color: transparent;
+}
+
+.prescription-disable-btn>button:hover{
+  cursor: pointer;
+}
+
+.prescription-form-container>input{
+  width: 500px;
+  height: 40px;
+  outline: none;
+  border: none;
+  padding-left: 10px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.userid-container>input{
+  width: 500px;
+  height: 40px;
+  outline: none;
+  border: none;
+  padding-left: 10px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.prescription-add-btn{
+  width: 100%;
+  text-align: center;
+  padding: 10px;
+  border: none;
+  outline: none;
+  font-size: medium;
+  border-radius: 5px;
+  background-color: greenyellow;
+}
+
+.prescription-logo{
+  width: max-content;
+  margin: auto;
+  margin-bottom: 30px;
 }
 
 

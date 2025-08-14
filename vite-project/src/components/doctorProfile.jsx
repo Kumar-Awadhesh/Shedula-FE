@@ -21,6 +21,13 @@ const DoctorProfile = () => {
     const [userInfo, setUserInfo] = useState(false); // set user info as false;
     const [doctorProfile, setDoctorProfile] = useState([]); // set user profile as an empty array.
     const [doctorAppointments, setDoctorAppointments] = useState([]);
+    const [appointmentComplete, setAppointmentComplete] = useState(false);
+    const [prescriptionData, setPrescriptionData] = useState(false);
+    const [medicineName, setMedicineName] = useState("");
+    const [dose, setDose] = useState("");
+    const [description, setDescription] = useState("");
+    const [patientId, setPatientId] = useState("");
+    const [doctorPrescriptionData, setdoctorPrescriptionData] = useState([]);
     const navigate = useNavigate(); // intializing useNavigate.
 
 
@@ -170,11 +177,11 @@ const DoctorProfile = () => {
                     Authorization: `Bearer ${token}`
                 }
             })
-            
+
             setDoctorProfile([doctor.data.msg]);
             setLoading(false);
             console.log(doctor.data.msg)
-        
+
         }
         catch (err) {
             console.log("doctor catch error", err);
@@ -182,8 +189,9 @@ const DoctorProfile = () => {
     }
 
     useEffect(() => {
-        fetchDoctor()
-        fetctDoctorAppointment()
+        fetchDoctor();
+        fetctDoctorAppointment();
+        getPrescriptionData();
     }, [])
 
 
@@ -193,11 +201,11 @@ const DoctorProfile = () => {
         if (!isTokenExpire(getToken)) {
             setProfile(true); //set profile as true.
             setSignup_btn(false); // set singnup button as false.
-            
-            if(role !== "doctor"){
+
+            if (role !== "doctor") {
                 navigate('/user');
             }
-            else if(role === "doctor"){
+            else if (role === "doctor") {
                 navigate('/doctorProfile')
             }
         }
@@ -218,11 +226,11 @@ const DoctorProfile = () => {
         if (!isTokenExpire(getToken)) {
             setProfile(true); //set profile as true.
             setSignup_btn(false); // set singnup button as false.
-            
-            if(role !== "doctor"){
+
+            if (role !== "doctor") {
                 navigate('/user');
             }
-            else if(role === "doctor"){
+            else if (role === "doctor") {
                 navigate('/doctorProfile')
             }
         }
@@ -238,16 +246,65 @@ const DoctorProfile = () => {
         }
     }
 
-    const fetctDoctorAppointment = async() => {
+    const fetctDoctorAppointment = async () => {
         const token = localStorage.getItem("token");
         const doctorAppointment = await axios.get("https://shedula.onrender.com/appointment/getAppointment", {
-            headers:{
+            headers: {
                 Authorization: `Bearer ${token}`
             }
         })
         console.log(doctorAppointment.data.msg);
         setDoctorAppointments(doctorAppointment.data.msg);
     }
+
+    const markAsComplete = (e) => {
+        if (e.target.value === "complete") {
+            setAppointmentComplete(true);
+        }
+        else {
+            setAppointmentComplete(false);
+        }
+    }
+
+    const addPrescription = async(user) => {
+        const prescriptionData = {
+            medicine: medicineName,
+            dosage: dose,
+            description: description,
+            patientId: user._id
+        }
+       
+        if(!prescriptionData.medicine || !prescriptionData.dosage || !prescriptionData.description){
+            alert("All fields required!");
+            return;
+        }
+        const token = localStorage.getItem("token");
+        const prescriptionMsg = await axios.post("https://shedula.onrender.com/prescription/addPrescription", prescriptionData, {
+            headers:{
+                Authorization: `Bearer ${token}`
+            }
+        })
+        
+        
+        alert(prescriptionMsg.data.msg);
+        setMedicineName("");
+        setDose("");
+        setDescription("");
+        setPrescriptionData(false);
+    }
+
+    const getPrescriptionData = async() => {
+        const token = localStorage.getItem("token")
+        const getPrescription = await axios.get("https://shedula.onrender.com/prescription/getPrescription", {
+            headers:{
+                Authorization: `Bearer ${token}`
+            }
+        })
+        console.log(getPrescription.data.msg)
+        setPrescriptionData(getPrescription.data.msg);
+    }
+
+
 
 
 
@@ -257,6 +314,7 @@ const DoctorProfile = () => {
             <main className="container">
                 <nav className='title-container'>
                     <div className='logo-container' onClick={(() => { navigate('/') })}>
+                        <img src="images/official-logo.png" alt="official-logo" />
                         <h1 className='title'>Healthcare</h1>
                     </div>
 
@@ -310,6 +368,7 @@ const DoctorProfile = () => {
                         <div className='overlay'>
                             <div className='login-container'>
                                 <button className='login-close-btn' onClick={(() => setLogin(false))}>X</button>
+                                <img className="official-logo" src="images/official-logo.png" alt="official-logo" />
                                 <h1>Login to Healthcare</h1>
                                 <input type="text" placeholder='Enter your email' value={email} onChange={(e) => setEmail(e.target.value)} /> <br />
                                 <input type="password" placeholder='Enter your password' value={password} onChange={(e) => setPassword(e.target.value)} /> <br />
@@ -335,6 +394,7 @@ const DoctorProfile = () => {
                         <div className='overlay'>
                             <div className='register-container'>
                                 <button className='register-close-btn' onClick={(() => setRegister(false))}>X</button>
+                                <img className="official-logo" src="images/official-logo.png" alt="official-logo" />
                                 <h1>Register to Healthcare</h1>
                                 <input type="text" placeholder='Enter your name' value={name} onChange={(e) => setName(e.target.value)} /> <br />
                                 <input type="email" placeholder='Enter your email' value={email} onChange={(e) => setEmail(e.target.value)} /> <br />
@@ -394,7 +454,7 @@ const DoctorProfile = () => {
                 </div>
                 <div className="doctor-appointment-container">
                     <h2 className="doctor-heading">Appointment Detail</h2>
-                    { 
+                    {
                         doctorAppointments.map((app, index) => (
                             <div className="doctor-appointment-card" key={index}>
                                 <div>
@@ -404,8 +464,9 @@ const DoctorProfile = () => {
                                 </div>
                                 <div>
                                     {
-                                        app.user.map((user, index)=>(
+                                        app.user.map((user, index) => (
                                             <h3 key={index}>{user.name}</h3>
+                                           
                                         ))
                                     }
                                     <h3>{app.date}</h3>
@@ -413,13 +474,55 @@ const DoctorProfile = () => {
                                 </div>
                                 <hr />
                                 <div className="cancel-complete-prescription-btn-container">
-                                    <button>Cancel Appointment</button>
-                                    <button>Mark as Complete</button>
-                                    <button>Prescription</button>
+                                    <button className="cancel-btn">Cancel Appointment</button>
+                                    <select className="complete-btn" onChange={markAsComplete}>
+                                        <option value="">Status</option>
+                                        <option value="complete">Complete</option>
+                                        <option value="incomplete">Incomplete</option>
+                                    </select>
+                                    {
+                                        appointmentComplete &&
+                                        <button className="prescription-btn" onClick={() => setPrescriptionData(true)}>Prescription</button>
+                                    }
                                 </div>
                             </div>
-                        )) 
-                    } 
+                        ))
+                    }
+
+                    {
+                        prescriptionData &&
+                        <div className="overlay">
+                            <div className="prescription-container">
+                                <div className="prescription-disable-btn"><button onClick={() => setPrescriptionData(false)}>X</button></div>
+                                <div className='logo-container prescription-logo' onClick={(() => { navigate('/') })}>
+                                    <img src="images/official-logo.png" alt="official-logo" />
+                                    <h1 className='title'>Healthcare</h1>
+                                </div>
+                                <h1 className="prescription-form-heading">Prescription for Patient</h1>
+                                <div className="prescription-form-container">
+                                    <input type="text" placeholder="Enter Medicine" value={medicineName} onChange={(e) => setMedicineName(e.target.value)} /> <br />
+                                    <input type="text" placeholder="Enter dosages" value={dose} onChange={(e) => setDose(e.target.value)} /> <br />
+                                    <input type="text" placeholder="Enter instruction" value={description} onChange={(e) => setDescription(e.target.value)} /> <br />
+                                    {
+                                        doctorAppointments.map((app, index) => (
+                                            <div key={index} className="userid-container">
+                                                {app.user.map((user, index) => (
+                                                    
+                                                    <button className="prescription-add-btn" onClick={()=>addPrescription(user)}>Add Prescription</button>
+                                                ))}
+                                            </div>
+                                        ))
+                                    } <br />
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div className="prescription-data-container">
+                    {
+
+                    }
                 </div>
                 <footer className="footer">
                     <div className="contact-container" id="contact-container">

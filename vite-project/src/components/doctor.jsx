@@ -254,6 +254,7 @@ const Doctor = () => {
             <main className="container">
                 <nav className='title-container'>
                     <div className='logo-container' onClick={(() => { navigate('/') })}>
+                        <img src="images/official-logo.png" alt="official-logo" />
                         <h1 className='title'>Healthcare</h1>
                     </div>
 
@@ -308,6 +309,7 @@ const Doctor = () => {
                         <div className='overlay'>
                             <div className='login-container'>
                                 <button className='login-close-btn' onClick={(() => setLogin(false))}>X</button>
+                                <img className="official-logo" src="images/official-logo.png" alt="official-logo" />
                                 <h1>Login to Healthcare</h1>
                                 <input type="text" placeholder='Enter your email' value={email} onChange={(e) => setEmail(e.target.value)} /> <br />
                                 <input type="password" placeholder='Enter your password' value={password} onChange={(e) => setPassword(e.target.value)} /> <br />
@@ -333,6 +335,7 @@ const Doctor = () => {
                         <div className='overlay'>
                             <div className='register-container'>
                                 <button className='register-close-btn' onClick={(() => setRegister(false))}>X</button>
+                                <img className="official-logo" src="images/official-logo.png" alt="official-logo" />
                                 <h1>Register to Healthcare</h1>
                                 <input type="text" placeholder='Enter your name' value={name} onChange={(e) => setName(e.target.value)} /> <br />
                                 <input type="email" placeholder='Enter your email' value={email} onChange={(e) => setEmail(e.target.value)} /> <br />
