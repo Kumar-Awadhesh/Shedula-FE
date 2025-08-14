@@ -290,7 +290,7 @@ const DoctorProfile = () => {
 
     const getPrescriptionData = async() => {
         const token = localStorage.getItem("token")
-        const getPrescription = await axios.get("http://localhost:3201/prescription/getPrescription", {
+        const getPrescription = await axios.get("https://shedula.onrender.com/prescription/getPrescription", {
             headers:{
                 Authorization: `Bearer ${token}`
             }
@@ -514,9 +514,12 @@ const DoctorProfile = () => {
                         </div>
                     }
                 </div>
-                <div className="prescription-data-container">
-                    <h2>Prescription Detail</h2>
+                
+                <h2 className="prescription-data-heading">Prescription Detail</h2>
+                {
+                    <div className="prescription-data-container">
                     {
+                        appointmentComplete &&
                         doctorPrescriptionData.map((pres, index) => (
                             <div className="doctor-prescription-card" key={index}>
                                 <div>
@@ -532,7 +535,8 @@ const DoctorProfile = () => {
                             </div>
                         ))
                     }
-                </div>
+                    </div>
+                }
                 <footer className="footer">
                     <div className="contact-container" id="contact-container">
                         <h4>Reach out to us:-</h4>

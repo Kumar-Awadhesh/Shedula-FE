@@ -414,7 +414,7 @@ const User = () => {
                         loading ? (<h3>Loading...</h3>) : (
                             userProfile.map((user, index) => (
                                 <div className="user-card" key={index}>
-                                    <div>
+                                    <div className="user-card-container">
                                         <h1 className="user-detail">User Detail</h1>
                                         <h2 className="username">{user.name}</h2>
                                         <h3>Phone:- {user.phone}</h3>
